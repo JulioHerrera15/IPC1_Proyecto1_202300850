@@ -1,0 +1,16 @@
+{
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "C:\\Users\\HP\\OneDrive - Facultad de Ingeniería de la Universidad de San Carlos de Guatemala\\Tercer Semestre\\Laboratorio IPC 1\\Proyectos\\Proyectos\\Proyecto 1\\Proyecto1\\lib\\gnujaxp.jar",
+        "C:\\Users\\HP\\OneDrive - Facultad de Ingeniería de la Universidad de San Carlos de Guatemala\\Tercer Semestre\\Laboratorio IPC 1\\Proyectos\\Proyectos\\Proyecto 1\\Proyecto1\\lib\\gson-2.2.2.jar",
+        "C:\\Users\\HP\\OneDrive - Facultad de Ingeniería de la Universidad de San Carlos de Guatemala\\Tercer Semestre\\Laboratorio IPC 1\\Proyectos\\Proyectos\\Proyecto 1\\Proyecto1\\lib\\itext.jar",
+        "C:\\Users\\HP\\OneDrive - Facultad de Ingeniería de la Universidad de San Carlos de Guatemala\\Tercer Semestre\\Laboratorio IPC 1\\Proyectos\\Proyectos\\Proyecto 1\\Proyecto1\\lib\\jcommon-1.0.0.jar",
+        "C:\\Users\\HP\\OneDrive - Facultad de Ingeniería de la Universidad de San Carlos de Guatemala\\Tercer Semestre\\Laboratorio IPC 1\\Proyectos\\Proyectos\\Proyecto 1\\Proyecto1\\lib\\jfreechart-1.0.1.jar",
+        "C:\\Users\\HP\\OneDrive - Facultad de Ingeniería de la Universidad de San Carlos de Guatemala\\Tercer Semestre\\Laboratorio IPC 1\\Proyectos\\Proyectos\\Proyecto 1\\Proyecto1\\lib\\jfreechart.jar",
+        "C:\\Users\\HP\\OneDrive - Facultad de Ingeniería de la Universidad de San Carlos de Guatemala\\Tercer Semestre\\Laboratorio IPC 1\\Proyectos\\Proyectos\\Proyecto 1\\Proyecto1\\lib\\JTattoo-1.6.13.jar",
+        "C:\\Users\\HP\\OneDrive - Facultad de Ingeniería de la Universidad de San Carlos de Guatemala\\Tercer Semestre\\Laboratorio IPC 1\\Proyectos\\Proyectos\\Proyecto 1\\Proyecto1\\lib\\junit.jar",
+        "C:\\Users\\HP\\OneDrive - Facultad de Ingeniería de la Universidad de San Carlos de Guatemala\\Tercer Semestre\\Laboratorio IPC 1\\Proyectos\\Proyectos\\Proyecto 1\\Proyecto1\\lib\\servlet.jar",
+    ]
+}
