@@ -306,13 +306,13 @@ public class AdminFrame extends JFrame{
         btnAddProducto.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         btnAddProducto.setBorderPainted(false);
         btnAddProducto.setPreferredSize(new Dimension(100, 30));
-        btnAddProducto.addActionListener(new ActionListener() {
+        /*btnAddProducto.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 CrearProductoFrame nuevoProductoFrame = new CrearProductoFrame();
                 nuevoProductoFrame.initialize();
             }
-        });
+        });*/
 
 
         btnActualizarProducto.setFont(mainFont);
