@@ -1,7 +1,6 @@
 package interfaz;
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -54,6 +53,12 @@ public class ActualizarPaciente extends JFrame{
 
         cbGenero.setFont(mainFont);
 
+        tfNombre.setText(usuario.getNombres());
+        tfApellido.setText(usuario.getApellidos());        
+        tfPassword.setText(usuario.getContrasena());
+        cbGenero.setSelectedItem(usuario.getGenero());        
+        tfEdad.setText(usuario.getEdad());
+
         JPanel datosPanel = new JPanel();
         datosPanel.setLayout(new GridLayout(0,1,0,1));
         datosPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -75,7 +80,8 @@ public class ActualizarPaciente extends JFrame{
 
         JButton btnOK = new JButton("Actualizar Paciente");
         btnOK.setFont(mainFont);
-        //btnOK.setBackground(new Color(178, 242, 187));
+        btnOK.setBackground(new Color(251, 123, 123));
+        btnOK.setForeground(new Color(255, 255, 255));
         btnOK.setBorderPainted(false);
         btnOK.setForeground(getForeground());
         btnOK.addActionListener(new ActionListener() {
@@ -120,7 +126,7 @@ public class ActualizarPaciente extends JFrame{
 
         /************************** Frame settings *************************/
 
-        setTitle("Crear Paciente");
+        setTitle("Actualizar Paciente");
 
         setContentPane(panelPrincipal);
         setSize(400, 600);
@@ -131,23 +137,24 @@ public class ActualizarPaciente extends JFrame{
     }
 
     private void actualizarPaciente() {
-        // Obtener los datos actualizados del doctor desde los campos de texto
+        // Obtener los datos actualizados del paciente desde los campos de texto
         String nombre = tfNombre.getText();
-        String apellido =tfApellido.getText();
-        
+        String apellido =tfApellido.getText();        
         String password = tfPassword.getText();
-        String edad = tfEdad.getText();
         String genero = (String) cbGenero.getSelectedItem();
+        String edad = tfEdad.getText();
+        
 
-        // Actualizar los datos del doctor
+        // Actualizar los datos del paciente
         usuario.setNombres(nombre);
         usuario.setApellidos(apellido);
         usuario.setContrasena(password);
-        usuario.setEdad(edad);
         usuario.setGenero(genero);
+        usuario.setEdad(edad);
+        
 
         // Mostrar un mensaje de éxito
-        JOptionPane.showMessageDialog(null, "Doctor actualizado correctamente.");
+        JOptionPane.showMessageDialog(null, "Paciente actualizado correctamente.");
 
         // Actualizar el doctor en la lista
         App.actualizarPacienteEnLista(usuario);

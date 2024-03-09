@@ -69,8 +69,9 @@ public class CrearPacienteFrame extends JFrame {
         /************************** Buttons Label *************************/
 
         JButton btnOK = new JButton("Crear Paciente");
-        btnOK.setFont(mainFont);
-        //btnOK.setBackground(new Color(178, 242, 187));
+        btnOK.setBackground(new Color(251, 123, 123));
+        btnOK.setForeground(new Color(255, 255, 255));
+        btnOK.setFont(mainFont);        
         btnOK.setBorderPainted(false);
         btnOK.setForeground(getForeground());
         btnOK.addActionListener(new ActionListener() {

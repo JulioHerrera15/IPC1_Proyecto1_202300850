@@ -1,16 +1,24 @@
 package logica;
 
+
 public class Cita{
     private String especialidad;
     private String doctor;
-    private String horario;
+    private String fecha;
+    private String hora;
     private String motivo;
+    private String paciente;
+    public String codigoDoctor;
 
-    public Cita(String especialidad, String doctor, String horario, String motivo){
+    public Cita(String fecha,String hora,String paciente, String motivo,  String especialidad, String doctor, String codigoDoctor){
+        this.fecha = fecha;
+        this.hora = hora;
+        this.paciente = paciente;
+        this.motivo = motivo;        
         this.especialidad = especialidad;
         this.doctor = doctor;
-        this.horario = horario;
-        this.motivo = motivo;
+        this.codigoDoctor = codigoDoctor;
+        
     }
 
     public String getEspecialidad(){
@@ -21,13 +29,17 @@ public class Cita{
         return doctor;
     }
 
-    public static boolean isCita(Cita citas2){
-        
-        throw new UnsupportedOperationException("Unimplemented method 'isCita'");
+   public String getPaciente(){
+        return paciente;
     }
 
-    public String getHorario(){
-        return horario;
+    
+    public String getFecha(){
+        return fecha;
+    }
+
+    public String getHora(){
+        return hora;
     }
 
     public String getMotivo(){
@@ -42,12 +54,43 @@ public class Cita{
         this.doctor = doctor;
     }
 
-    public void setHorario(String horario){
-        this.horario = horario;
+    public void setFecha(String horario){
+        this.fecha = horario;
+    }
+
+    public void setHora(String hora){
+        this.hora = hora;
     }
 
     public void setMotivo(String motivo){
         this.motivo = motivo;
     }
+
+    public void setPaciente(String paciente){
+        this.paciente = paciente;
+    }
+
+    @Override
+    public String toString() {
+        return "Cita{" +
+            "fecha=" + fecha +
+            ", hora=" + hora +
+            ", paciente=" + paciente +
+            ", motivo=" + motivo +
+            ", especialidad=" + especialidad +
+            ", doctor=" + doctor +
+            ", codigoDoctor=" + codigoDoctor +
+            '}';
+    }
+
+    public String getCodigoDoctor(){
+        return codigoDoctor;
+    }
+
+    public void setCodigoDoctor(String codigoDoctor){
+        this.codigoDoctor = codigoDoctor;
+    }
+
+    
     
 }

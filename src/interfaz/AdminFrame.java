@@ -25,7 +25,7 @@ public class AdminFrame extends JFrame{
     JButton btnEliminarProducto = new JButton("Eliminar Producto");
     public static DefaultTableModel modeloTablaDoctores = new DefaultTableModel();
     public static DefaultTableModel modeloTablaPacientes = new DefaultTableModel();
-    static DefaultTableModel modeloTablaProductos = new DefaultTableModel();
+    public static DefaultTableModel modeloTablaProductos = new DefaultTableModel();
     
     public AdminFrame(List<Doctor> doctores, List<Usuario> usuarios, List<Producto> productos) {
         initialize(doctores, usuarios, productos);
@@ -178,7 +178,8 @@ public class AdminFrame extends JFrame{
 
 
         btnAddUser.setFont(mainFont);
-        //btnAddUser.setBackground(new Color(178, 242, 187));
+        btnAddUser.setBackground(new Color(251, 123, 123));
+        btnAddUser.setForeground(new Color(255, 255, 255));
         btnAddUser.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         btnAddUser.setBorderPainted(false);
         btnAddUser.setBounds(50, 100, 300, 40);
@@ -191,25 +192,25 @@ public class AdminFrame extends JFrame{
         });
         
         btnActualizarPaciente.setFont(mainFont);
-        //btnActualizarPaciente.setBackground(new Color(178, 242, 187));
+        btnActualizarPaciente.setBackground(new Color(251, 123, 123));
+        btnActualizarPaciente.setForeground(new Color(255, 255, 255));
         btnActualizarPaciente.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         btnActualizarPaciente.setBorderPainted(false);
         btnActualizarPaciente.setBounds(50, 150, 300, 40);
         btnActualizarPaciente.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int filaSeleccionada = tablaPacientes.getSelectedRow();
-                if (filaSeleccionada >= 0) {
-                    String codigo = (String) modeloTablaPacientes.getValueAt(filaSeleccionada, 0);
+                String codigo = JOptionPane.showInputDialog(null, "Ingrese el código del paciente a actualizar", "Actualizar Paciente", JOptionPane.QUESTION_MESSAGE);
+                if(codigo != null && !codigo.isEmpty()){
                     Usuario usuario = buscarPacientePorCodigo(codigo);
-                    if (usuario != null) {
-                        ActualizarPaciente interfazActualizarDoctor = new ActualizarPaciente(usuario);
-                        interfazActualizarDoctor.initialize();
+                    if(usuario != null){
+                        ActualizarPaciente actualizarPacienteFrame = new ActualizarPaciente(usuario);
+                        actualizarPacienteFrame.initialize();
                     } else {
-                        JOptionPane.showMessageDialog(null, "No se encontró un doctor con el código proporcionado.");
+                        JOptionPane.showMessageDialog(null, "No se encontró un paciente con el código proporcionado.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Por favor, selecciona un doctor para actualizar.");
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese un código para buscar al paciente.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -217,31 +218,45 @@ public class AdminFrame extends JFrame{
         
 
         btnEliminarPaciente.setFont(mainFont);
-        //btnEliminarPaciente.setBackground(new Color(178, 242, 187));
+        btnEliminarPaciente.setBackground(new Color(251, 123, 123));
+        btnEliminarPaciente.setForeground(new Color(255, 255, 255));
         btnEliminarPaciente.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         btnEliminarPaciente.setBorderPainted(false);
         btnEliminarPaciente.setBounds(50, 200, 300, 40);
         btnEliminarPaciente.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
-                int filaSeleccionadaPaciente = tablaPacientes.getSelectedRow();
-        
-                if (filaSeleccionadaPaciente != -1) {
-                    int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar este paciente?", "Confirmación", JOptionPane.YES_NO_OPTION);
-                    if(confirmacion == JOptionPane.YES_OPTION){
-                        modeloTablaPacientes.removeRow(filaSeleccionadaPaciente);
-                        JOptionPane.showMessageDialog(null, "Paciente eliminado correctamente", "Eliminación exitosa", JOptionPane.INFORMATION_MESSAGE);
+                String codigo = JOptionPane.showInputDialog(null, "Ingrese el código del paciente a eliminar", "Eliminar Paciente", JOptionPane.QUESTION_MESSAGE);
+                if(codigo != null && !codigo.isEmpty()){
+                    Usuario usuario = buscarPacientePorCodigo(codigo);
+                    if(usuario != null){
+                        int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar este paciente?", "Confirmación", JOptionPane.YES_NO_OPTION);
+                        if(confirmacion == JOptionPane.YES_OPTION){
+                            int rowIndex = -1;
+                            for (int i = 0; i < modeloTablaPacientes.getRowCount(); i++) {
+                                if (modeloTablaPacientes.getValueAt(i, 0).equals(codigo)) {
+                                    rowIndex = i;
+                                    break;
+                                }
+                            }
+                            if (rowIndex != -1) {
+                                modeloTablaPacientes.removeRow(rowIndex);
+                                JOptionPane.showMessageDialog(null, "Paciente eliminado correctamente", "Eliminación exitosa", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No se encontró un paciente con el código proporcionado.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Por favor, selecciona un paciente para eliminar", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese un código para buscar al paciente.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });     
         
         
         btnAddDoctor.setFont(mainFont);
-        //btnAddDoctor.setBackground(new Color(178, 242, 187));
+        btnAddDoctor.setBackground(new Color(251, 123, 123));
+        btnAddDoctor.setForeground(new Color(255, 255, 255));
         btnAddDoctor.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         btnAddDoctor.setBorderPainted(false);
         btnAddDoctor.setBounds(50, 150, 300, 40);
@@ -254,55 +269,69 @@ public class AdminFrame extends JFrame{
         });
 
         btnActualizarDoctor.setFont(mainFont);
-        //btnAddDoctor.setBackground(new Color(178, 242, 187));
+        btnActualizarDoctor.setBackground(new Color(251, 123, 123));
+        btnActualizarDoctor.setForeground(new Color(255, 255, 255));
         btnActualizarDoctor.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         btnActualizarDoctor.setBorderPainted(false);
         btnActualizarDoctor.setBounds(50, 150, 300, 40);
         btnActualizarDoctor.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int filaSeleccionada = tablaDoctores.getSelectedRow();
-                if (filaSeleccionada >= 0) {
-                    String codigo = (String) modeloTablaDoctores.getValueAt(filaSeleccionada, 0);
+                String codigo = JOptionPane.showInputDialog(null, "Ingrese el código del doctor a actualizar", "Actualizar Doctor", JOptionPane.QUESTION_MESSAGE);
+                if(codigo != null && !codigo.isEmpty()){
                     Doctor doctor = buscarDoctorPorCodigo(codigo);
-                    if (doctor != null) {
-                        ActualizarDoctorFrame interfazActualizarDoctor = new ActualizarDoctorFrame(doctor);
-                        interfazActualizarDoctor.initialize();
+                    if(doctor != null){
+                        ActualizarDoctorFrame actualizarDoctorFrame = new ActualizarDoctorFrame(doctor);
+                        actualizarDoctorFrame.initialize();
                     } else {
-                        JOptionPane.showMessageDialog(null, "No se encontró un doctor con el código proporcionado.");
+                        JOptionPane.showMessageDialog(null, "No se encontró un doctor con el código proporcionado.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Por favor, selecciona un doctor para actualizar.");
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese un código para buscar al doctor.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
 
         btnEliminarDoctor.setFont(mainFont);
-        //btnAddDoctor.setBackground(new Color(178, 242, 187));
+        btnEliminarDoctor.setBackground(new Color(251, 123, 123));
+        btnEliminarDoctor.setForeground(new Color(255, 255, 255));
         btnEliminarDoctor.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         btnEliminarDoctor.setBorderPainted(false);
         btnEliminarDoctor.setBounds(50, 150, 300, 40);
         btnEliminarDoctor.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
-                int filaSeleccionadaDoctor = tablaDoctores.getSelectedRow();
-        
-                if (filaSeleccionadaDoctor != -1) {
-                    int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar este doctor?", "Confirmación", JOptionPane.YES_NO_OPTION);
-                    if(confirmacion == JOptionPane.YES_OPTION){
-                        modeloTablaDoctores.removeRow(filaSeleccionadaDoctor);
-                        JOptionPane.showMessageDialog(null, "Doctor eliminado correctamente", "Eliminación exitosa", JOptionPane.INFORMATION_MESSAGE);
+                String codigo = JOptionPane.showInputDialog(null, "Ingrese el código del doctor a eliminar", "Eliminar Doctor", JOptionPane.QUESTION_MESSAGE);
+                if(codigo != null && !codigo.isEmpty()){
+                    Doctor doctor = buscarDoctorPorCodigo(codigo);
+                    if(doctor != null){
+                        int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar este doctor?", "Confirmación", JOptionPane.YES_NO_OPTION);
+                        if(confirmacion == JOptionPane.YES_OPTION){                            
+                            int rowIndex = -1;
+                            for (int i = 0; i < modeloTablaDoctores.getRowCount(); i++) {
+                                if (modeloTablaDoctores.getValueAt(i, 0).equals(codigo)) {
+                                    rowIndex = i;
+                                    break;
+                                }
+                            }                            
+                            if (rowIndex != -1) {
+                                modeloTablaDoctores.removeRow(rowIndex);
+                                JOptionPane.showMessageDialog(null, "Doctor eliminado correctamente", "Eliminación exitosa", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No se encontró un doctor con el código proporcionado.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Por favor, selecciona un doctor para eliminar", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese un código para buscar al doctor.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
 
         
         btnAddProducto.setFont(mainFont);
-        //btnAddProducto.setBackground(new Color(178, 242, 187));
+        btnAddProducto.setBackground(new Color(251, 123, 123));
+        btnAddProducto.setForeground(new Color(255, 255, 255));
         btnAddProducto.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         btnAddProducto.setBorderPainted(false);
         btnAddProducto.setPreferredSize(new Dimension(100, 30));
@@ -316,39 +345,65 @@ public class AdminFrame extends JFrame{
 
 
         btnActualizarProducto.setFont(mainFont);
-        //btnActualizarPaciente.setBackground(new Color(178, 242, 187));
+        btnActualizarProducto.setBackground(new Color(251, 123, 123));
+        btnActualizarProducto.setForeground(new Color(255, 255, 255));
         btnActualizarProducto.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         btnActualizarProducto.setBorderPainted(false);
         btnActualizarProducto.setBounds(50, 150, 300, 40);
-       /* btnActualizarProducto.addActionListener(new ActionListener() {
+        btnActualizarProducto.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ActualizarPaciente actualizarPaciente = new ActualizarPaciente();
-                actualizarPaciente.initialize();
+                String codigo = JOptionPane.showInputDialog(null, "Ingrese el código del producto a actualizar", "Actualizar Producto", JOptionPane.QUESTION_MESSAGE);
+                if(codigo != null && !codigo.isEmpty()){
+                    Producto producto = buscarProductoPorCodigo(codigo);
+                    if(producto != null){
+                        ActualizarProductoFrame actualizarProductoFrame = new ActualizarProductoFrame(producto);
+                        actualizarProductoFrame.initialize();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No se encontró un producto con el código proporcionado.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese un código para buscar el producto.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
-        });*/
+        });     
         
         
 
         btnEliminarProducto.setFont(mainFont);
-        //btnEliminarPaciente.setBackground(new Color(178, 242, 187));
+        btnEliminarProducto.setBackground(new Color(251, 123, 123));
+        btnEliminarProducto.setForeground(new Color(255, 255, 255));
         btnEliminarProducto.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         btnEliminarProducto.setBorderPainted(false);
         btnEliminarProducto.setBounds(50, 200, 300, 40);
         btnEliminarProducto.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
-                int filaseleccionadaProducto = tablaProductos.getSelectedRow();
-        
-                if (filaseleccionadaProducto != -1) {
-                    int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar este producto?", "Confirmación", JOptionPane.YES_NO_OPTION);
-                    if(confirmacion == JOptionPane.YES_OPTION){
-                        modeloTablaProductos.removeRow(filaseleccionadaProducto);
-                        JOptionPane.showMessageDialog(null, "Producto eliminado correctamente", "Eliminación exitosa", JOptionPane.INFORMATION_MESSAGE);
+                String codigo = JOptionPane.showInputDialog(null, "Ingrese el código del producto a eliminar", "Eliminar Producto", JOptionPane.QUESTION_MESSAGE);
+                if(codigo != null && !codigo.isEmpty()){
+                    Producto producto = buscarProductoPorCodigo(codigo);
+                    if(producto != null){
+                        int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar este producto?", "Confirmación", JOptionPane.YES_NO_OPTION);
+                        if(confirmacion == JOptionPane.YES_OPTION){
+                            
+                            int rowIndex = -1;
+                            for (int i = 0; i < modeloTablaProductos.getRowCount(); i++) {
+                                if (modeloTablaProductos.getValueAt(i, 0).equals(codigo)) {
+                                    rowIndex = i;
+                                    break;
+                                }
+                            }
+                            
+                            if (rowIndex != -1) {
+                                modeloTablaProductos.removeRow(rowIndex);
+                                JOptionPane.showMessageDialog(null, "Producto eliminado correctamente", "Eliminación exitosa", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No se encontró un producto con el código proporcionado.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Por favor, selecciona un producto para eliminar", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese un código para buscar el producto.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -358,8 +413,7 @@ public class AdminFrame extends JFrame{
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        panel.setBounds(0, 0, 400, 300);
-        //panel.setBackground(new Color(251, 240, 154));
+        panel.setBounds(0, 0, 400, 300);        
         panel.add(lbTitle, BorderLayout.NORTH);
         panel.add(tabbedPane, BorderLayout.CENTER);        
 
@@ -372,6 +426,7 @@ public class AdminFrame extends JFrame{
         setVisible(true);
 
     }
+    
 
     public static void agregarDoctorATabla(Doctor doctor) {
         modeloTablaDoctores.addRow(new Object[]{doctor.getCodigo(), doctor.getNombres(), doctor.getApellidos(), doctor.getEspecialidad(), doctor.getContrasena(), doctor.getGenero(), doctor.getTelefono(), doctor.getEdad()});
@@ -413,6 +468,16 @@ public class AdminFrame extends JFrame{
         return null;
     }
 
+    public Producto buscarProductoPorCodigo(String codigo) {
+        List<Producto> productos = logica.App.productos;
+        for (Producto producto : productos) {
+            if (producto instanceof Producto && producto.getCodigo().equals(codigo)) {
+                return (Producto) producto;
+            }
+        }
+        return null;
+    }
+
     public static void actualizarTablaDoctores() {
         List<Doctor> doctores = logica.App.doctores;
         modeloTablaDoctores.setRowCount(0);
@@ -428,6 +493,8 @@ public class AdminFrame extends JFrame{
             modeloTablaProductos.addRow(new Object[]{producto.getCodigo(), producto.getNombre(), producto.getDescripcion(), producto.getCantidad(), producto.getPrecio()});
         }
     }
+
+    
 
     
 

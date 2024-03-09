@@ -1,5 +1,6 @@
 package logica;
 public class Usuario {
+    public static Usuario usuario;
     protected String codigo;
     protected String contrasena;
     protected String nombres;

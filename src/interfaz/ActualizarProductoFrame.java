@@ -3,17 +3,23 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-
-import com.formdev.flatlaf.FlatLightLaf;
-
 import logica.App;
 import logica.Producto;
 
-public class CrearProductoFrame extends JFrame{
-    final private Font mainFont = new Font("Segoe UI", Font.PLAIN, 20);
-    JTextField tfDescripcion, tfNombre, tfPrecio, tfCantidad, tfCodigo;
 
-    public void initialize(){              
+
+public class ActualizarProductoFrame extends JFrame{
+    final private Font mainFont = new Font("Segoe UI", Font.PLAIN, 20);
+    JTextField tfDescripcion, tfNombre, tfPrecio, tfCantidad;
+    private Producto producto;
+    
+    
+
+    public ActualizarProductoFrame(Producto producto) {
+        this.producto = producto;
+    }
+    public void initialize(){
+              
 
         /************************** Form panel *************************/
 
@@ -42,13 +48,25 @@ public class CrearProductoFrame extends JFrame{
         tfPrecio.setFont(mainFont);
 
         JPanel datosPanel = new JPanel();
+        
+
+        
+
+        tfNombre.setText(producto.getNombre());
+        tfDescripcion.setText(producto.getDescripcion());
+        tfCantidad.setText(String.valueOf(producto.getCantidad()));
+        tfPrecio.setText(String.valueOf(producto.getPrecio()));
+
+
+
+        
         datosPanel.setLayout(new GridLayout(0,1,0,1));
         datosPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        if (tfNombre != null && tfDescripcion != null && tfCantidad != null) {
+        datosPanel.setOpaque(false);
+        if (tfNombre != null && tfDescripcion != null && tfCantidad != null && tfPrecio != null) {
             
             datosPanel.add(lblNombre);
-            datosPanel.add(tfNombre);            
+            datosPanel.add(tfNombre);           
             datosPanel.add(lblDescripcion);
             datosPanel.add(tfDescripcion);
             datosPanel.add(lblCantidad);
@@ -58,10 +76,12 @@ public class CrearProductoFrame extends JFrame{
 
         }
         
+        
+        
 
         /************************** Buttons Label *************************/
 
-        JButton btnOK = new JButton("Agregar Producto");
+        JButton btnOK = new JButton("Actualizar");
         btnOK.setFont(mainFont);
         btnOK.setBackground(new Color(251, 123, 123));
         btnOK.setForeground(new Color(255, 255, 255));
@@ -70,22 +90,7 @@ public class CrearProductoFrame extends JFrame{
         btnOK.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String Nombre = tfNombre.getText();
-                String Descripcion = tfDescripcion.getText();
-                int Cantidad = Integer.parseInt(tfCantidad.getText());
-                double Precio = Double.parseDouble(tfPrecio.getText());
-
-                if (Nombre.isEmpty() || Descripcion.isEmpty() || Cantidad == 0 || Precio == 0.0) {
-                    JOptionPane.showMessageDialog(null, "Por favor, rellena todos los campos", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
-                InterfazIniciarSesion.codigoProducto = InterfazIniciarSesion.codigoProducto + 1;
-                String codigoString = Integer.toString(InterfazIniciarSesion.codigoProducto);
-                JOptionPane.showMessageDialog(null, "Producto creado con éxito", "Usuario creado", JOptionPane.INFORMATION_MESSAGE);
-                Producto nuevoProducto = new Producto(codigoString, Nombre, Descripcion, Cantidad, Precio);
-                App.productos.add(nuevoProducto);
-                AdminFrame.agregarProductoTabla(nuevoProducto);
-                dispose();
+                actualizarProducto();
                 
             }
         });
@@ -113,7 +118,7 @@ public class CrearProductoFrame extends JFrame{
 
         JPanel panelPrincipal = new JPanel();
         panelPrincipal.setLayout(new BorderLayout());
-        //panelPrincipal.setBackground(new Color(165, 216, 255));
+        
         panelPrincipal.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panelPrincipal.add(datosPanel, BorderLayout.NORTH);
         panelPrincipal.add(buttonPanel, BorderLayout.SOUTH);
@@ -124,30 +129,39 @@ public class CrearProductoFrame extends JFrame{
 
         /************************** Frame settings *************************/
 
-        setTitle("Agregar Producto");
+        setTitle("Actualizar Producto");
 
         setContentPane(panelPrincipal);
-        setSize(400, 600);
+        setSize(400, 750);
         setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);   
              
     }
 
-    
+    private void actualizarProducto() {
+        // Obtener los datos actualizados del doctor desde los campos de texto
+        String nombre = tfNombre.getText();
+        String descripcion = tfDescripcion.getText();
+        int cantidad = Integer.parseInt(tfCantidad.getText());
+        double precio = Double.parseDouble(tfPrecio.getText());
+        
+        
 
-    
+        // Actualizar los datos del doctor
+        producto.setNombre(nombre);
+        producto.setDescripcion(descripcion);
+        producto.setCantidad(cantidad);
+        producto.setPrecio(precio);
+        
 
-    public static void main(String[] args) {
-        FlatLightLaf.setup();
-        try {
-            UIManager.setLookAndFeel("com.formdev.flatlaf.themes.FlatMacDarkLaf");
-            
-        } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        CrearPacienteFrame crearPaciente = new CrearPacienteFrame();
-        crearPaciente.initialize();
+        // Mostrar un mensaje de éxito
+        JOptionPane.showMessageDialog(null, "Producto actualizado correctamente.");
+
+        // Actualizar el doctor en la lista
+        App.actualizarProductoEnLista(producto);
+
+        // Cerrar la ventana
+        dispose();
     }
-    
 }

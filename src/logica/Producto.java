@@ -1,6 +1,7 @@
 package logica;
 
 public class Producto{
+    public static Producto producto;
     private String descripcion;
     private String nombre;
     private int cantidad;

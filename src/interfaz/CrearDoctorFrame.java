@@ -89,7 +89,8 @@ public class CrearDoctorFrame extends JFrame{
 
         JButton btnOK = new JButton("Añadir Doctor");
         btnOK.setFont(mainFont);
-        //btnOK.setBackground(new Color(178, 242, 187));
+        btnOK.setBackground(new Color(251, 123, 123));
+        btnOK.setForeground(new Color(255, 255, 255));
         btnOK.setBorderPainted(false);
         btnOK.setForeground(getForeground());
         btnOK.addActionListener(new ActionListener() {
@@ -97,11 +98,12 @@ public class CrearDoctorFrame extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 String Nombres = tfNombre.getText();
                 String Apellidos = tfApellido.getText();
-                String Especialidad = tfEspecialidad.getText();                
+                String Especialidad = tfEspecialidad.getText(); 
+                String Password = tfPassword.getText();               
                 String Genero = (String) cbGenero.getSelectedItem();
                 String Telefono = tfTelefono.getText();
                 String Edad = tfEdad.getText();
-                String Password = tfPassword.getText();
+                
                 
                 if (Nombres.isEmpty() || Apellidos.isEmpty() || Especialidad.isEmpty() || Password.length() == 0 || Genero.equals("Selecciona uno") || Edad.isEmpty()){
                     JOptionPane.showMessageDialog(null, "Por favor, rellena todos los campos", "Advertencia" ,JOptionPane.WARNING_MESSAGE);

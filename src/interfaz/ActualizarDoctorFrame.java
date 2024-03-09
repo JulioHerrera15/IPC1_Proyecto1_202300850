@@ -70,9 +70,10 @@ public class ActualizarDoctorFrame extends JFrame{
         tfApellido.setText(doctor.getApellidos());
         tfEspecialidad.setText(doctor.getEspecialidad());
         tfPassword.setText(doctor.getContrasena());
+        cbGenero.setSelectedItem(doctor.getGenero());
         tfTelefono.setText(doctor.getTelefono());
         tfEdad.setText(doctor.getEdad());
-        cbGenero.setSelectedItem(doctor.getGenero());
+        
 
 
 
@@ -102,7 +103,8 @@ public class ActualizarDoctorFrame extends JFrame{
 
         JButton btnOK = new JButton("Actualizar");
         btnOK.setFont(mainFont);
-        //btnOK.setBackground(new Color(178, 242, 187));
+        btnOK.setBackground(new Color(251, 123, 123));
+        btnOK.setForeground(new Color(255, 255, 255));
         btnOK.setBorderPainted(false);
         btnOK.setForeground(getForeground());
         btnOK.addActionListener(new ActionListener() {
@@ -163,18 +165,20 @@ public class ActualizarDoctorFrame extends JFrame{
         String apellido =tfApellido.getText();
         String especialidad = tfEspecialidad.getText();
         String password = tfPassword.getText();
+        String genero = (String) cbGenero.getSelectedItem();
         String telefono = tfTelefono.getText();
         String edad = tfEdad.getText();
-        String genero = (String) cbGenero.getSelectedItem();
+        
 
         // Actualizar los datos del doctor
         doctor.setNombres(nombre);
         doctor.setApellidos(apellido);
         doctor.setEspecialidad(especialidad);
         doctor.setContrasena(password);
+        doctor.setGenero(genero);
         doctor.setTelefono(telefono);
         doctor.setEdad(edad);
-        doctor.setGenero(genero);
+        
 
         // Mostrar un mensaje de éxito
         JOptionPane.showMessageDialog(null, "Doctor actualizado correctamente.");

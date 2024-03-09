@@ -1,5 +1,9 @@
 package logica;
+
+import java.util.Objects;
+
 public class Doctor extends Usuario {
+    public static Doctor doctor;
     private String nombres;
     private String apellidos;
     private String especialidad;
@@ -100,6 +104,21 @@ public class Doctor extends Usuario {
             }
         }
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Doctor doctor = (Doctor) obj;
+        return Objects.equals(nombres, doctor.nombres);
+        // Compara otros campos si es necesario
+    }
+
+    
 
     
 }

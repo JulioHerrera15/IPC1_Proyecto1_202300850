@@ -69,7 +69,8 @@ public class NuevoUsuarioFrame extends JFrame {
 
         JButton btnOK = new JButton("Crear Cuenta");
         btnOK.setFont(mainFont);
-        //btnOK.setBackground(new Color(178, 242, 187));
+        btnOK.setBackground(new Color(0, 122, 255));
+        btnOK.setForeground(new Color(255, 255, 255));
         btnOK.setBorderPainted(false);
         btnOK.setForeground(getForeground());
         btnOK.addActionListener(new ActionListener() {
