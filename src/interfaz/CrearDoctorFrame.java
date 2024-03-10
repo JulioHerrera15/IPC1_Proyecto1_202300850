@@ -113,9 +113,10 @@ public class CrearDoctorFrame extends JFrame{
                 InterfazIniciarSesion.codigoDoctor = InterfazIniciarSesion.codigoDoctor + 1;
                 String codigoString = Integer.toString(InterfazIniciarSesion.codigoDoctor);
                 JOptionPane.showMessageDialog(null, "Doctor creado con éxito, código: " + codigoString, "Doctor Creado", JOptionPane.INFORMATION_MESSAGE);
-                Doctor nuevoDoctor = new Doctor(codigoString, Nombres, Apellidos, Especialidad, Password, Genero, Telefono, Edad);
+                Doctor nuevoDoctor = new Doctor(codigoString, Nombres, Apellidos, Especialidad, Password, Genero, Telefono, Edad, "No disponible");
                 App.doctores.add(nuevoDoctor);
                 AdminFrame.agregarDoctorATabla(nuevoDoctor);
+                AdminFrame.actualizarGraficaDoctores();
                 dispose();
                 
             }

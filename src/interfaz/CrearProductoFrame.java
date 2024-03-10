@@ -85,6 +85,7 @@ public class CrearProductoFrame extends JFrame{
                 Producto nuevoProducto = new Producto(codigoString, Nombre, Descripcion, Cantidad, Precio);
                 App.productos.add(nuevoProducto);
                 AdminFrame.agregarProductoTabla(nuevoProducto);
+                AdminFrame.actualizarGraficaProductos();
                 dispose();
                 
             }

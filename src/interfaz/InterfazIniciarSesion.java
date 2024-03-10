@@ -49,7 +49,8 @@ public class InterfazIniciarSesion extends JFrame{
                 String Codigo = tfCodigo.getText();
                 String Password = new String(tfPassword.getText());
 
-                               
+                boolean usuarioEncontrado = false;
+
                 for (Usuario usuario : App.usuarios) {
                     if (usuario.getCodigo().equals(Codigo) && usuario.getContrasena().equals(Password)){
                         JOptionPane.showMessageDialog(null, "Bienvenido " + usuario.getNombres() + " " + usuario.getApellidos(), "Bienvenido", JOptionPane.INFORMATION_MESSAGE);
@@ -63,10 +64,11 @@ public class InterfazIniciarSesion extends JFrame{
                             ex.printStackTrace();
                         }
                         pacienteFrame.initialize();
+                        usuarioEncontrado = true;
                         return; // Salir del método después de encontrar una coincidencia
                     }
                 }
-                
+
                 for (Doctor doctor : App.doctores) {
                     if(doctor.getCodigo().equals(Codigo) && doctor.getContrasena().equals(Password)){
                         JOptionPane.showMessageDialog(null, "Bienvenido Dr. " + doctor.getNombres() + " " + doctor.getApellidos(), "Bienvenido", JOptionPane.INFORMATION_MESSAGE);
@@ -80,10 +82,11 @@ public class InterfazIniciarSesion extends JFrame{
                             ex.printStackTrace();
                         }
                         doctorFrame.initialize();
+                        usuarioEncontrado = true;
                         return; // Salir del método después de encontrar una coincidencia
                     }
-                }
-                
+                }               
+
                 if (Codigo.isEmpty() || Password.length() == 0) {
                     JOptionPane.showMessageDialog(null, "Por favor, rellena todos los campos");
                     return;
@@ -99,11 +102,13 @@ public class InterfazIniciarSesion extends JFrame{
                         ex.printStackTrace();
                     }
                     administradorFrame.setVisible(true);
+                    usuarioEncontrado = true;
                 }
-
                 
-            }
-        });
+                if (!usuarioEncontrado) {
+                    JOptionPane.showMessageDialog(null, "Código o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+        }});
 
         JButton btnCrearCuenta = new JButton("¿No tienes cuenta? ¡Crea una!");
         btnCrearCuenta.setFont(mainFont);

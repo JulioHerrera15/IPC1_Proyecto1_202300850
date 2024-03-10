@@ -1,24 +1,25 @@
 package interfaz;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
-import com.formdev.flatlaf.FlatLightLaf;
 
 import logica.App;
-import logica.Doctor;
-public class ActualizarDoctorFrame extends JFrame{
+import logica.Usuario;
 
+public class EditarPerfilPacienteFrame extends JFrame{
     final private Font mainFont = new Font("Segoe UI", Font.PLAIN, 20);
-    JTextField tfPassword, tfNombre, tfApellido, tfEspecialidad, tfEdad, tfTelefono;
-    private Doctor doctor;
+    JTextField tfPassword, tfNombre, tfApellido, tfEdad;
     String[] generos = {"Selecciona uno", "Masculino", "Femenino"};
     JComboBox<String> cbGenero = new JComboBox<>(generos);
-
-    public ActualizarDoctorFrame(Doctor doctor) {
-        this.doctor = doctor;
+    private Usuario usuario;
+    
+    public EditarPerfilPacienteFrame(Usuario usuario) {
+        this.usuario = usuario;
     }
+    
     public void initialize(){
+        
               
 
         /************************** Form panel *************************/
@@ -35,12 +36,6 @@ public class ActualizarDoctorFrame extends JFrame{
         tfApellido = new JTextField();
         tfApellido.setFont(mainFont);
 
-        JLabel lblEspecialidad = new JLabel("Especialidad", SwingConstants.CENTER);
-        lblEspecialidad.setFont(mainFont);
-
-        tfEspecialidad = new JTextField();
-        tfEspecialidad.setFont(mainFont);
-
         JLabel lblPassword = new JLabel("Password", SwingConstants.CENTER);
         lblPassword.setFont(mainFont);
 
@@ -50,32 +45,19 @@ public class ActualizarDoctorFrame extends JFrame{
         JLabel lblGenero = new JLabel("Género", SwingConstants.CENTER);
         lblGenero.setFont(mainFont);
 
-        JLabel lblTelefono = new JLabel("Teléfono (opcional)", SwingConstants.CENTER);
-        lblTelefono.setFont(mainFont);
-
-        tfTelefono = new JTextField();
-        tfTelefono.setFont(mainFont);
-
         JLabel lblEdad = new JLabel("Edad", SwingConstants.CENTER);
         lblEdad.setFont(mainFont);
 
         tfEdad = new JTextField();
         tfEdad.setFont(mainFont);
 
-              
         cbGenero.setFont(mainFont);
 
-
-        tfNombre.setText(doctor.getNombres());
-        tfApellido.setText(doctor.getApellidos());
-        tfEspecialidad.setText(doctor.getEspecialidad());
-        tfPassword.setText(doctor.getContrasena());
-        cbGenero.setSelectedItem(doctor.getGenero());
-        tfTelefono.setText(doctor.getTelefono());
-        tfEdad.setText(doctor.getEdad());
-        
-
-
+        tfNombre.setText(usuario.getNombres());
+        tfApellido.setText(usuario.getApellidos());        
+        tfPassword.setText(usuario.getContrasena());
+        cbGenero.setSelectedItem(usuario.getGenero());        
+        tfEdad.setText(usuario.getEdad());
 
         JPanel datosPanel = new JPanel();
         datosPanel.setLayout(new GridLayout(0,1,0,1));
@@ -85,33 +67,27 @@ public class ActualizarDoctorFrame extends JFrame{
         datosPanel.add(tfNombre, BorderLayout.AFTER_LAST_LINE);        
         datosPanel.add(lblApellido, BorderLayout.CENTER);
         datosPanel.add(tfApellido, BorderLayout.AFTER_LAST_LINE);
-        datosPanel.add(lblEspecialidad, BorderLayout.CENTER);
-        datosPanel.add(tfEspecialidad, BorderLayout.AFTER_LAST_LINE);
         datosPanel.add(lblPassword, BorderLayout.SOUTH);
         datosPanel.add(tfPassword, BorderLayout.AFTER_LAST_LINE);
         datosPanel.add(lblGenero, BorderLayout.CENTER);
         datosPanel.add(cbGenero, BorderLayout.AFTER_LAST_LINE);
-        datosPanel.add(lblTelefono, BorderLayout.CENTER);
-        datosPanel.add(tfTelefono, BorderLayout.AFTER_LAST_LINE);
         datosPanel.add(lblEdad, BorderLayout.CENTER);
         datosPanel.add(tfEdad, BorderLayout.AFTER_LAST_LINE);
-        
         
         
 
         /************************** Buttons Label *************************/
 
-        JButton btnOK = new JButton("Actualizar");
+        JButton btnOK = new JButton("Actualizar Datos");
         btnOK.setFont(mainFont);
-        btnOK.setBackground(new Color(251, 123, 123));
+        btnOK.setBackground(new Color(191, 90, 242));
         btnOK.setForeground(new Color(255, 255, 255));
         btnOK.setBorderPainted(false);
         btnOK.setForeground(getForeground());
         btnOK.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                actualizarDoctor();
-                AdminFrame.actualizarGraficaDoctores();
+                actualizarPaciente();
                 
             }
         });
@@ -150,59 +126,43 @@ public class ActualizarDoctorFrame extends JFrame{
 
         /************************** Frame settings *************************/
 
-        setTitle("Actualizar Doctor");
+        setTitle("Editar mi perfil");
 
         setContentPane(panelPrincipal);
-        setSize(400, 750);
+        setSize(400, 600);
         setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);   
              
     }
 
-    private void actualizarDoctor() {
-        // Obtener los datos actualizados del doctor desde los campos de texto
+    private void actualizarPaciente() {
+        // Obtener los datos actualizados del paciente desde los campos de texto
         String nombre = tfNombre.getText();
-        String apellido =tfApellido.getText();
-        String especialidad = tfEspecialidad.getText();
+        String apellido =tfApellido.getText();        
         String password = tfPassword.getText();
         String genero = (String) cbGenero.getSelectedItem();
-        String telefono = tfTelefono.getText();
         String edad = tfEdad.getText();
         
 
-        // Actualizar los datos del doctor
-        doctor.setNombres(nombre);
-        doctor.setApellidos(apellido);
-        doctor.setEspecialidad(especialidad);
-        doctor.setContrasena(password);
-        doctor.setGenero(genero);
-        doctor.setTelefono(telefono);
-        doctor.setEdad(edad);
+        // Actualizar los datos del paciente
+        usuario.setNombres(nombre);
+        usuario.setApellidos(apellido);
+        usuario.setContrasena(password);
+        usuario.setGenero(genero);
+        usuario.setEdad(edad);
         
 
         // Mostrar un mensaje de éxito
-        JOptionPane.showMessageDialog(null, "Doctor actualizado correctamente.");
+        JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
 
         // Actualizar el doctor en la lista
-        App.actualizarDoctorEnLista(doctor);
+        App.actualizarPacienteEnLista(usuario);
 
         // Cerrar la ventana
         dispose();
     }
 
     
-
-    public static void main(String[] args) {
-        FlatLightLaf.setup();
-        try {
-            UIManager.setLookAndFeel("com.formdev.flatlaf.themes.FlatMacDarkLaf");
-            
-        } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        CrearDoctorFrame crearDoctorFrame = new CrearDoctorFrame();
-        crearDoctorFrame.initialize();
-    }
     
 }

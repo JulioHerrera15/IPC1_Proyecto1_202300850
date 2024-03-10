@@ -8,15 +8,17 @@ public class Cita{
     private String hora;
     private String motivo;
     private String paciente;
+    private String codigoPaciente;
     public String codigoDoctor;
 
-    public Cita(String fecha,String hora,String paciente, String motivo,  String especialidad, String doctor, String codigoDoctor){
+    public Cita(String fecha,String hora,String paciente, String motivo,  String especialidad, String doctor, String codigoPaciente, String codigoDoctor){
         this.fecha = fecha;
         this.hora = hora;
         this.paciente = paciente;
         this.motivo = motivo;        
         this.especialidad = especialidad;
         this.doctor = doctor;
+        this.codigoPaciente = codigoPaciente;
         this.codigoDoctor = codigoDoctor;
         
     }
@@ -91,6 +93,12 @@ public class Cita{
         this.codigoDoctor = codigoDoctor;
     }
 
-    
+    public String getCodigoPaciente(){
+        return codigoPaciente;
+    }
+
+    public void setCodigoPaciente(String codigoPaciente){
+        this.codigoPaciente = codigoPaciente;
+    }
     
 }

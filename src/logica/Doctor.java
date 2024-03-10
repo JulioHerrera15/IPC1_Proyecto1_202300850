@@ -12,8 +12,9 @@ public class Doctor extends Usuario {
     private String edad;
     private String telefono;
     private String genero;
+    private String horario;
 
-    public Doctor(String codigo, String nombres, String apellidos, String especialidad, String contrasena, String genero, String telefono, String edad) {
+    public Doctor(String codigo, String nombres, String apellidos, String especialidad, String contrasena, String genero, String telefono, String edad, String horario) {
         super(codigo, nombres, apellidos, contrasena, genero, edad);
         this.nombres = nombres;
         this.apellidos = apellidos;
@@ -23,6 +24,7 @@ public class Doctor extends Usuario {
         this.edad = edad;
         this.telefono = telefono;
         this.genero = genero;
+        this.horario = horario;
 
     }
 
@@ -53,6 +55,10 @@ public class Doctor extends Usuario {
 
     public String getEdad() {
         return edad;
+    }
+
+    public String getHorario() {
+        return horario;
     }
 
     public void setEdad(String edad) {
@@ -91,6 +97,10 @@ public class Doctor extends Usuario {
         this.apellidos = apellidos;
     }
 
+    public void setHorario(String horario) {
+        this.horario = horario;
+    }
+
     public static void actualizarDoctorEnLista(Doctor doctor) {
         for (int i = 0; i < interfaz.AdminFrame.modeloTablaDoctores.getRowCount(); i++) {
             if (interfaz.AdminFrame.modeloTablaDoctores.getValueAt(i, 0).equals(doctor.getCodigo())) {
@@ -117,6 +127,8 @@ public class Doctor extends Usuario {
         return Objects.equals(nombres, doctor.nombres);
         // Compara otros campos si es necesario
     }
+
+    
 
     
 

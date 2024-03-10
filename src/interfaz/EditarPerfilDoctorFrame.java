@@ -7,7 +7,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 import logica.App;
 import logica.Doctor;
-public class ActualizarDoctorFrame extends JFrame{
+public class EditarPerfilDoctorFrame extends JFrame{
 
     final private Font mainFont = new Font("Segoe UI", Font.PLAIN, 20);
     JTextField tfPassword, tfNombre, tfApellido, tfEspecialidad, tfEdad, tfTelefono;
@@ -15,7 +15,7 @@ public class ActualizarDoctorFrame extends JFrame{
     String[] generos = {"Selecciona uno", "Masculino", "Femenino"};
     JComboBox<String> cbGenero = new JComboBox<>(generos);
 
-    public ActualizarDoctorFrame(Doctor doctor) {
+    public EditarPerfilDoctorFrame(Doctor doctor) {
         this.doctor = doctor;
     }
     public void initialize(){
@@ -101,9 +101,9 @@ public class ActualizarDoctorFrame extends JFrame{
 
         /************************** Buttons Label *************************/
 
-        JButton btnOK = new JButton("Actualizar");
+        JButton btnOK = new JButton("Actualizar datos");
         btnOK.setFont(mainFont);
-        btnOK.setBackground(new Color(251, 123, 123));
+        btnOK.setBackground(new Color(50, 215, 75));
         btnOK.setForeground(new Color(255, 255, 255));
         btnOK.setBorderPainted(false);
         btnOK.setForeground(getForeground());
@@ -111,7 +111,6 @@ public class ActualizarDoctorFrame extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 actualizarDoctor();
-                AdminFrame.actualizarGraficaDoctores();
                 
             }
         });
@@ -150,7 +149,7 @@ public class ActualizarDoctorFrame extends JFrame{
 
         /************************** Frame settings *************************/
 
-        setTitle("Actualizar Doctor");
+        setTitle("Editar mi perfil");
 
         setContentPane(panelPrincipal);
         setSize(400, 750);
@@ -182,7 +181,7 @@ public class ActualizarDoctorFrame extends JFrame{
         
 
         // Mostrar un mensaje de éxito
-        JOptionPane.showMessageDialog(null, "Doctor actualizado correctamente.");
+        JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
 
         // Actualizar el doctor en la lista
         App.actualizarDoctorEnLista(doctor);

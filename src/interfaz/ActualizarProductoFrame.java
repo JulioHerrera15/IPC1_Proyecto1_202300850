@@ -91,6 +91,7 @@ public class ActualizarProductoFrame extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 actualizarProducto();
+                AdminFrame.actualizarGraficaProductos();
                 
             }
         });
@@ -156,7 +157,7 @@ public class ActualizarProductoFrame extends JFrame{
         
 
         // Mostrar un mensaje de éxito
-        JOptionPane.showMessageDialog(null, "Producto actualizado correctamente.");
+        JOptionPane.showMessageDialog(null, "Producto actualizado correctamente.");        
 
         // Actualizar el doctor en la lista
         App.actualizarProductoEnLista(producto);

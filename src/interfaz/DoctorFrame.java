@@ -1,26 +1,26 @@
 package interfaz;
-
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import logica.App;
 import logica.Cita;
 import logica.Doctor;
-
-
-
+import logica.Horario;
 
 public class DoctorFrame extends JFrame {
     final private Font mainFont = new Font("Segoe UI", Font.PLAIN, 20);
     final private Font tableFont = new Font("Segoe UI", Font.PLAIN, 15);
     final private Font encabezadoFont = new Font("Segoe UI", Font.BOLD, 30);
+    public static int codigoCitas = 000;
     private JTabbedPane tabbedPane;
+    DefaultTableModel modeloTablaHorario = new DefaultTableModel();
+    private static List<String> horarios = new ArrayList<>();
     private static Doctor doctor;
 
     public DoctorFrame(Doctor doctor){
@@ -50,11 +50,13 @@ public class DoctorFrame extends JFrame {
             encabezadoJPanel.setBounds(0, 0, 1200, 100);
 
             JButton editarPerfilDoctor = new JButton("Editar Perfil");
+            editarPerfilDoctor.setBackground(new Color(50, 215, 75));
+            editarPerfilDoctor.setForeground(new Color(255, 255, 255));
             final Doctor finalDoctorActual = doctorActual;
             editarPerfilDoctor.setFont(mainFont);
             editarPerfilDoctor.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    ActualizarDoctorFrame actualizarDoctorFrame = new ActualizarDoctorFrame(finalDoctorActual);
+                    EditarPerfilDoctorFrame actualizarDoctorFrame = new EditarPerfilDoctorFrame(finalDoctorActual);
                     actualizarDoctorFrame.initialize();
                 }
             });
@@ -111,11 +113,10 @@ public class DoctorFrame extends JFrame {
             // Añadir la tabla a un JScrollPane
             JScrollPane scrollPaneCitas = new JScrollPane(tablaCitas);
 
-            JTableHeader header = tablaCitas.getTableHeader();
-            header.setFont(mainFont);
+            tablaCitas.getTableHeader().setFont(new Font(tableFont.getName(), Font.BOLD, tableFont.getSize()));
 
             JButton btnVerMas = new JButton("Ver más");
-            btnVerMas.setBackground(new Color(123, 251, 123));
+            btnVerMas.setBackground(new Color(50, 215, 75));
             btnVerMas.setForeground(new Color(255, 255, 255));
             btnVerMas.setFont(mainFont);
             btnVerMas.addActionListener(new ActionListener() {
@@ -133,7 +134,7 @@ public class DoctorFrame extends JFrame {
             });
 
             JButton btnAtender = new JButton("Atender");
-            btnAtender.setBackground(new Color(123, 251, 123));
+            btnAtender.setBackground(new Color(50, 215, 75));
             btnAtender.setForeground(new Color(255, 255, 255));
             btnAtender.setFont(mainFont);
             btnAtender.addActionListener(new ActionListener() {
@@ -150,7 +151,7 @@ public class DoctorFrame extends JFrame {
             });
 
             JButton btnRechazar = new JButton("Rechazar");
-            btnRechazar.setBackground(new Color(123, 251, 123));
+            btnRechazar.setBackground(new Color(50, 215, 75));
             btnRechazar.setForeground(new Color(255, 255, 255));
             btnRechazar.setFont(mainFont);
             btnRechazar.addActionListener(new ActionListener() {
@@ -173,20 +174,68 @@ public class DoctorFrame extends JFrame {
 
             // Añadir el JScrollPane al panel de citas
             panelCitas.add(scrollPaneCitas, BorderLayout.CENTER);
+
+            // Crear un JTextField para que el Doctor ingrese su horario
+            JTextField horarioField = new JTextField();
+            horarioField.setFont(mainFont);
+
+            // Crear un botón para agregar el horario
+            JButton asignarButton = new JButton("Asignar");
+            asignarButton.setFont(mainFont);
+            asignarButton.setBackground(new Color(50, 215, 75));
+            asignarButton.setForeground(new Color(255, 255, 255));
+            asignarButton.addActionListener(e -> {
+                // Obtener el horario del JTextField
+                Doctor doctor = DoctorFrame.doctor;
+                codigoCitas++;
+                // Formatear el código de citas
+                String codigoCitasFormateado = String.format("%03d", codigoCitas);
+            
+                String horario = horarioField.getText();
+                
+
+                // Agregar el horario a la tabla
+                modeloTablaHorario.addRow(new Object[]{codigoCitasFormateado, horario});
+
+                // Crear un nuevo objeto Horario y agregarlo al ArrayList
+                Horario nuevoHorario = new Horario(doctor, codigoCitas, horario);
+                App.horarios.add(nuevoHorario);
+                horarios.add(horario);
+
+                // Limpiar el JTextField
+                horarioField.setText("");
+            });
+
+            JLabel labelHorarioCitas = new JLabel("Horario de citas:");
+            labelHorarioCitas.setFont(mainFont);
+            JLabel tituloPanelAsignarHorarios = new JLabel("Mi horario disponible para citas:");
+            tituloPanelAsignarHorarios.setFont(mainFont);
+            tituloPanelAsignarHorarios.setHorizontalAlignment(SwingConstants.CENTER);
+            JPanel panelHorario = new JPanel();
+            panelHorario.add(labelHorarioCitas);
+            panelHorario.add(horarioField);
+            panelHorario.add(asignarButton);
+            panelHorario.add(tituloPanelAsignarHorarios);
+
+
             
             //Panel Asignar Horarios
             JPanel panelAsignarHorarios = new JPanel(new BorderLayout());
-
+           
+            
+            
+            panelAsignarHorarios.add(panelHorario, BorderLayout.NORTH);
+            
             JTable tablaHorarios = new JTable();
-            DefaultTableModel modeloTablaHorario = new DefaultTableModel();
-            modeloTablaHorario.addColumn("Hora");
-            modeloTablaHorario.addColumn("Lunes");
-            modeloTablaHorario.addColumn("Martes");
-            modeloTablaHorario.addColumn("Miercoles");
-            modeloTablaHorario.addColumn("Jueves");
-            modeloTablaHorario.addColumn("Viernes");
-            modeloTablaHorario.addColumn("Sabado");
-            modeloTablaHorario.addColumn("Domingo");
+            tablaHorarios.setFont(tableFont);
+
+            tablaHorarios.getTableHeader().setFont(new Font(tableFont.getName(), Font.BOLD, tableFont.getSize()));
+
+            
+            
+            modeloTablaHorario.addColumn("No.");
+            modeloTablaHorario.addColumn("Horario de cita");
+            
             tablaHorarios.setModel(modeloTablaHorario);
             JScrollPane scrollPane = new JScrollPane(tablaHorarios);
             panelAsignarHorarios.add(scrollPane, BorderLayout.CENTER);
@@ -198,9 +247,7 @@ public class DoctorFrame extends JFrame {
             panelPrincipal.add(titulo, BorderLayout.NORTH);
             panelPrincipal.add(tabbedPane, BorderLayout.CENTER);
 
-            JLabel tituloPanelAsignarHorarios = new JLabel("Mi horario disponible para citas:");
-            tituloPanelAsignarHorarios.setHorizontalAlignment(SwingConstants.CENTER);
-            panelAsignarHorarios.add(tituloPanelAsignarHorarios, BorderLayout.SOUTH);
+            
 
             tabbedPane.addTab("Asignar Horarios", panelAsignarHorarios);
 
@@ -225,6 +272,10 @@ public class DoctorFrame extends JFrame {
         }
         DoctorFrame doctorFrame = new DoctorFrame(doctor);
         doctorFrame.initialize();
+    }
+
+    public static List<String> getHorarios() {
+        return horarios;
     }
 
 

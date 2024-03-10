@@ -3,12 +3,24 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
+
+import logica.App;
 import logica.Doctor;
 import logica.Usuario;
 import logica.Producto;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 public class AdminFrame extends JFrame{
     final private Font mainFont = new Font("Segoe UI", Font.PLAIN, 20);
     final private Font titleFont = new Font("Segoe UI", Font.BOLD, 30);
@@ -23,9 +35,16 @@ public class AdminFrame extends JFrame{
     JButton btnAddProducto = new JButton("Agregar Producto");
     JButton btnActualizarProducto = new JButton("Actualizar Producto");
     JButton btnEliminarProducto = new JButton("Eliminar Producto");
+    static JPanel panelProductos = new JPanel(new BorderLayout());
     public static DefaultTableModel modeloTablaDoctores = new DefaultTableModel();
     public static DefaultTableModel modeloTablaPacientes = new DefaultTableModel();
     public static DefaultTableModel modeloTablaProductos = new DefaultTableModel();
+    private static DefaultPieDataset dataset = new DefaultPieDataset();
+    private static DefaultCategoryDataset datasetProductos = new DefaultCategoryDataset();
+    private static HashMap<String, Integer> doctoresPorEspecialidad = new HashMap<>();
+    private static HashMap<String, Integer> productosPorCantidad = new HashMap<>();
+    private static ChartPanel chartPanel;
+
     
     public AdminFrame(List<Doctor> doctores, List<Usuario> usuarios, List<Producto> productos) {
         initialize(doctores, usuarios, productos);
@@ -122,19 +141,33 @@ public class AdminFrame extends JFrame{
         panelBotonesDoctor.setBounds(0, 0, 400, 300);
         panelBotonesDoctor.add(btnAddDoctor);
         panelBotonesDoctor.add(btnActualizarDoctor);
-        panelBotonesDoctor.add(btnEliminarDoctor);
+        panelBotonesDoctor.add(btnEliminarDoctor);       
+               
+        JFreeChart chart = ChartFactory.createPieChart(
+            "Cantidad de doctores por especialidad",  
+            dataset,                                 
+            true,                                    
+            true,
+            false
+        );
+
+        chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new Dimension(400, 300));  // Cambia estos números a las dimensiones deseadas
+
+        
 
         tablaDoctores.setModel(modeloTablaDoctores);
         tablaDoctores.setFont(tableFont);
         JScrollPane scrollPaneDoctores = new JScrollPane(tablaDoctores);
         panelDoctores.add(scrollPaneDoctores, BorderLayout.CENTER);
         panelDoctores.add(panelBotonesDoctor, BorderLayout.EAST);
+        panelDoctores.add(chartPanel, BorderLayout.SOUTH);
         tabbedPane.addTab("Doctores", panelDoctores);
         tabbedPane.setFont(mainFont);
         getContentPane().add(tabbedPane);
 
 
-        JPanel panelProductos = new JPanel(new BorderLayout());
+        
         JTable tablaProductos = new JTable();
         tablaProductos.getTableHeader().setFont(new Font(tableFont.getName(), Font.BOLD, tableFont.getSize()));
 
@@ -174,6 +207,21 @@ public class AdminFrame extends JFrame{
         tabbedPane.addTab("Productos", panelProductos);
         tabbedPane.setFont(mainFont);        
         getContentPane().add(tabbedPane);
+
+        JFreeChart chartProductos = ChartFactory.createBarChart(
+            "Cantidad de productos",      // Título de la gráfica
+            "Producto",                   // Etiqueta del eje x
+            "Cantidad",                   // Etiqueta del eje y
+            datasetProductos,             // Datos
+            PlotOrientation.VERTICAL,     // Orientación
+            true,                         // Incluir leyenda
+            true,                         // Incluir tooltips
+            false                         // Incluir URLs
+        );
+
+        ChartPanel chartPanel = new ChartPanel(chartProductos);
+        chartPanel.setMaximumSize(new Dimension(400, 300));  // Cambia estos números a las dimensiones deseadas
+        panelProductos.add(chartPanel, BorderLayout.SOUTH);
 
 
 
@@ -265,6 +313,7 @@ public class AdminFrame extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 CrearDoctorFrame nuevoDoctorFrame = new CrearDoctorFrame();
                 nuevoDoctorFrame.initialize();
+                actualizarGraficaDoctores();
             }
         });
 
@@ -413,7 +462,7 @@ public class AdminFrame extends JFrame{
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        panel.setBounds(0, 0, 400, 300);        
+        panel.setBounds(0, 0, 400, 600);        
         panel.add(lbTitle, BorderLayout.NORTH);
         panel.add(tabbedPane, BorderLayout.CENTER);        
 
@@ -492,6 +541,88 @@ public class AdminFrame extends JFrame{
         for (Producto producto : productos) {
             modeloTablaProductos.addRow(new Object[]{producto.getCodigo(), producto.getNombre(), producto.getDescripcion(), producto.getCantidad(), producto.getPrecio()});
         }
+    }
+
+    public static void actualizarGraficaDoctores() {
+        doctoresPorEspecialidad.clear();
+        for (Doctor doctor : App.doctores) {
+            String especialidad = doctor.getEspecialidad();
+            if (doctoresPorEspecialidad.containsKey(especialidad)) {
+                doctoresPorEspecialidad.put(especialidad, doctoresPorEspecialidad.get(especialidad) + 1);
+            } else {
+                doctoresPorEspecialidad.put(especialidad, 1);
+            }
+        }
+    
+        dataset = new DefaultPieDataset();
+        for (Map.Entry<String, Integer> entry : doctoresPorEspecialidad.entrySet()) {
+            dataset.setValue(entry.getKey(), entry.getValue());
+        }
+    
+        JFreeChart chart = ChartFactory.createPieChart(
+            "Cantidad de doctores por especialidad",  
+            dataset,                                 
+            true,                                    
+            true,
+            false
+        );
+    
+        chartPanel.setChart(chart);
+    }
+
+    public static void actualizarGraficaProductos() {
+        // Limpiar el dataset
+        datasetProductos.clear();
+    
+        // Recopilar los datos
+        productosPorCantidad.clear();
+        for (Producto producto : App.productos) {
+            String nombre = producto.getNombre();
+            int cantidad = producto.getCantidad(); // Asegúrate de tener un método getCantidad() en tu clase Producto
+            if (productosPorCantidad.containsKey(nombre)) {
+                productosPorCantidad.put(nombre, productosPorCantidad.get(nombre) + cantidad);
+            } else {
+                productosPorCantidad.put(nombre, cantidad);
+            }
+        }
+    
+        // Añadir los datos al dataset
+        
+    
+        // Crear la gráfica
+        JFreeChart chartProductos = ChartFactory.createBarChart(
+            "Cantidad de productos",      // Título de la gráfica
+            "Producto",                   // Etiqueta del eje x
+            "Cantidad",                   // Etiqueta del eje y
+            datasetProductos,             // Datos
+            PlotOrientation.VERTICAL,     // Orientación
+            true,                         // Incluir leyenda
+            true,                         // Incluir tooltips
+            false                         // Incluir URLs
+        );
+
+        int index = 0;
+        for (Map.Entry<String, Integer> entry : productosPorCantidad.entrySet()) {
+            datasetProductos.addValue(entry.getValue(), "Cantidad", entry.getKey());
+
+            // Asignar un color a cada serie
+            BarRenderer renderer = (BarRenderer) chartProductos.getCategoryPlot().getRenderer();
+            renderer.setSeriesPaint(index, new Color((int)(Math.random() * 0x1000000))); // Genera un color aleatorio
+            index++;
+        }
+    
+        // Actualizar el ChartPanel
+        if (chartPanel != null) {
+            panelProductos.remove(chartPanel);
+        }
+        chartPanel = new ChartPanel(chartProductos);
+        chartPanel.setMaximumSize(new Dimension(400, 300));  // Cambia estos números a las dimensiones deseadas
+        panelProductos.add(chartPanel, BorderLayout.SOUTH);
+        chartPanel.getChart().fireChartChanged();
+    
+        // Redibujar el panel
+        panelProductos.revalidate();
+        panelProductos.repaint();
     }
 
     

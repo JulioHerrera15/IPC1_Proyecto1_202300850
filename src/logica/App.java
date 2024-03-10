@@ -6,6 +6,7 @@ import interfaz.AdminFrame;
 import interfaz.InterfazIniciarSesion;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class App {
@@ -15,6 +16,8 @@ public class App {
     public static List<Usuario> usuarios = new ArrayList<>();
     public static List<Producto> productos = new ArrayList<>();
     public static List<Cita> citas = new ArrayList<>();
+    public static List<Horario> horarios = new ArrayList<>();
+    public static HashMap<String, ArrayList<Cita>> citasPorPaciente = new HashMap<>();
 
         
     public static void main(String[] args) {
